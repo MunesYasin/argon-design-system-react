@@ -19,6 +19,19 @@
             margin-left: .25rem;
         }
     }
+
+    @media (max-width: 768px) {
+        .nav-link {
+          font-size: $font-size-sm; /* Adjust font size for smaller screens */
+        }
+      }
+      
+      /* Media query for screens with a minimum width of 1200 pixels (e.g., large desktops) */
+      @media (min-width: 1085px) {
+        .nav-link {
+          font-size:$font-size-lg /* Adjust font size for larger screens */
+        }
+      }
 }
 
 .navbar-brand {

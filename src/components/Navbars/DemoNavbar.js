@@ -19,6 +19,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
+import { auth } from "../../assets/config/firebase";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+
 // reactstrap components
 import {
   Button,
@@ -40,15 +43,29 @@ import {
 } from "reactstrap";
 
 class DemoNavbar extends React.Component {
+  state = {
+    collapseClasses: "",
+    collapseOpen: false,
+    isSignedIn: false,
+  };
   componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
     headroom.init();
+
+    // Listen for authentication state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        console.log("User signed in:", user);
+        this.setState({ isSignedIn: true });
+      } else {
+        // No user is signed in
+        console.log("No user signed in");
+        this.setState({ isSignedIn: false });
+      }
+    });
   }
-  state = {
-    collapseClasses: "",
-    collapseOpen: false,
-  };
 
   onExiting = () => {
     this.setState({
@@ -62,7 +79,26 @@ class DemoNavbar extends React.Component {
     });
   };
 
+  redirectToLandingPage = () => {
+    // Your redirection logic here
+    window.location.href = "/landing-page";
+  };
+
+  logOut = async () => {
+    try {
+      // Sign the user out using the signOut() method
+      signOut(auth).then(() => {
+        this.redirectToLandingPage();
+      });
+      // The user is now signed out. The onAuthStateChanged listener will trigger, and currentUser will be set to null in the state.
+    } catch (error) {
+      // Handle any sign-out errors
+      console.error("Sign-out error:", error);
+    }
+  };
+
   render() {
+    const { isSignedIn } = this.state;
     return (
       <>
         <header className="header-global">
@@ -107,7 +143,7 @@ class DemoNavbar extends React.Component {
                   </Row>
                 </div>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-                  <UncontrolledDropdown nav>
+                  {/* <UncontrolledDropdown nav>
                     <DropdownToggle nav>
                       <i className="ni ni-ui-04 d-lg-none mr-1" />
                       <span className="nav-link-inner--text">Components</span>
@@ -180,20 +216,121 @@ class DemoNavbar extends React.Component {
                       <DropdownItem to="/landing-page" tag={Link}>
                         Landing
                       </DropdownItem>
-                      <DropdownItem to="/profile-page" tag={Link}>
-                        Profile
+                      <DropdownItem to="/home-page" tag={Link}>
+                        Home
                       </DropdownItem>
-                      <DropdownItem to="/login-page" tag={Link}>
-                        Login
+                      <DropdownItem to="/plans-page" tag={Link}>
+                        Plans
                       </DropdownItem>
-                      <DropdownItem to="/register-page" tag={Link}>
-                        Register
-                      </DropdownItem>
+                      {isSignedIn && (
+                        <>
+                          <DropdownItem to="/profile-page" tag={Link}>
+                            Profile
+                          </DropdownItem>
+                        </>
+                      )}
+
+                      {!isSignedIn && (
+                        <>
+                          <DropdownItem to="/login-page" tag={Link}>
+                            Login
+                          </DropdownItem>
+                          <DropdownItem to="/register-page" tag={Link}>
+                            Register
+                          </DropdownItem>
+                        </>
+                      )}
                     </DropdownMenu>
+                  </UncontrolledDropdown> */}
+                  <UncontrolledDropdown nav>
+                    {" "}
+                    <DropdownToggle nav to="/landing-page" tag={Link}>
+                      <i className="ni ni-collection d-lg-none mr-1" />
+                      <span className="nav-link-inner--text">Landing</span>
+                    </DropdownToggle>
                   </UncontrolledDropdown>
+                  <UncontrolledDropdown nav>
+                    {" "}
+                    <DropdownToggle nav to="/home-page" tag={Link}>
+                      <i className="ni ni-collection d-lg-none mr-1" />
+                      <span className="nav-link-inner--text">Home</span>
+                    </DropdownToggle>
+                  </UncontrolledDropdown>
+                  <UncontrolledDropdown nav>
+                    {" "}
+                    <DropdownToggle nav to="/plans-page" tag={Link}>
+                      <i className="ni ni-collection d-lg-none mr-1" />
+                      <span className="nav-link-inner--text">Plans</span>
+                    </DropdownToggle>
+                  </UncontrolledDropdown>
+
+                  {isSignedIn && (
+                    <UncontrolledDropdown nav>
+                      {" "}
+                      <DropdownToggle nav to="/profile-page" tag={Link}>
+                        <i className="ni ni-collection d-lg-none mr-1" />
+                        <span className="nav-link-inner--text">Profile</span>
+                      </DropdownToggle>
+                    </UncontrolledDropdown>
+                  )}
+
+                  {!isSignedIn && (
+                    <>
+                      <UncontrolledDropdown nav>
+                        {" "}
+                        <DropdownToggle nav to="/login-page" tag={Link}>
+                          <i className="ni ni-collection d-lg-none mr-1" />
+                          <span className="nav-link-inner--text">Login</span>
+                        </DropdownToggle>
+                      </UncontrolledDropdown>
+                      <UncontrolledDropdown nav>
+                        {" "}
+                        <DropdownToggle nav to="/register-page" tag={Link}>
+                          <i className="ni ni-collection d-lg-none mr-1" />
+                          <span className="nav-link-inner--text">Register</span>
+                        </DropdownToggle>
+                      </UncontrolledDropdown>
+                    </>
+                  )}
+
+                  {isSignedIn && (
+                    <UncontrolledDropdown nav>
+                      {" "}
+                      <DropdownToggle nav>
+                        <i className="ni ni-collection d-lg-none mr-1" />
+                        <Button
+                          className="btn-neutral btn-icon"
+                          color="default"
+                          onClick={this.logOut}
+                        >
+                          <span className="btn-inner--icon">
+                            <i className="fa fa-cloud-download mr-2" />
+                          </span>
+                          <span className="nav-link-inner--text ml-1">
+                            LogOut
+                          </span>
+                        </Button>
+                      </DropdownToggle>
+                    </UncontrolledDropdown>
+
+                    // <NavItem className="d-none d-lg-block ml-lg-4">
+                    //   <Button
+                    //     className="btn-neutral btn-icon"
+                    //     color="default"
+                    //     onClick={this.logOut}
+                    //   >
+                    //     <span className="btn-inner--icon">
+                    //       <i className="fa fa-cloud-download mr-2" />
+                    //     </span>
+                    //     <span className="nav-link-inner--text ml-1">
+                    //       LogOut
+                    //     </span>
+                    //   </Button>
+                    // </NavItem>
+                  )}
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                  <NavItem>
+                  {/* <NavItem>
                     <NavLink
                       className="nav-link-icon"
                       href="https://www.facebook.com/creativetim"
@@ -256,22 +393,7 @@ class DemoNavbar extends React.Component {
                     <UncontrolledTooltip delay={0} target="tooltip112445449">
                       Star us on Github
                     </UncontrolledTooltip>
-                  </NavItem>
-                  <NavItem className="d-none d-lg-block ml-lg-4">
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="https://www.creative-tim.com/product/argon-design-system-react?ref=adsr-navbar"
-                      target="_blank"
-                    >
-                      <span className="btn-inner--icon">
-                        <i className="fa fa-cloud-download mr-2" />
-                      </span>
-                      <span className="nav-link-inner--text ml-1">
-                        Download
-                      </span>
-                    </Button>
-                  </NavItem>
+                  </NavItem> */}
                 </Nav>
               </UncontrolledCollapse>
             </Container>

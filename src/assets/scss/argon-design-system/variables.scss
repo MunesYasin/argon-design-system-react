@@ -327,6 +327,8 @@ $font-family-base: 'Open Sans', sans-serif !default;
 $font-family-alt: 'Open Sans', sans-serif !default;
 
 $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
+$font-size-xxxl:                ($font-size-base * 2.5);
+$font-size-xxl:                ($font-size-base * 2);
 $font-size-xl:                ($font-size-base * 1.5);
 $font-size-lg:                ($font-size-base * 1.25);
 $font-size-sm:                ($font-size-base * .875);
@@ -667,7 +669,7 @@ $navbar-nav-link-padding-x:         1rem !default;
 $navbar-nav-link-padding-y:         1rem !default;
 
 $navbar-nav-link-font-family:       $font-family-alt !default;
-$navbar-nav-link-font-size:         .9rem !default;
+$navbar-nav-link-font-size:         1rem !default;
 $navbar-nav-link-font-weight:       400 !default;
 $navbar-nav-link-text-transform:    normal !default;
 $navbar-nav-link-letter-spacing:    0 !default;

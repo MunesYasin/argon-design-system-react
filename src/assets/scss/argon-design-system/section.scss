@@ -500,6 +500,35 @@
     }
 }
 
+
+// plans cover
+.section-plans-cover {
+    height: 350px;
+    background-size: cover;
+    background-position: center center;
+}
+
+@include media-breakpoint-down(md) {
+    .section-plans-cover {
+        height: 250px;
+    }
+}
+
+// subscription cover
+.section-subscription-cover {
+    height: 150px;
+    background-size: cover;
+    background-position: center center;
+}
+
+@include media-breakpoint-down(md) {
+    .section-subscription-cover {
+        height: 100px;
+    }
+}
+
+
+
 // Components section (for demo)
 .section-components {
     >.form-control {
@@ -569,3 +598,83 @@
      pointer-events:none
 }
 */
+
+.plans-card-section{
+    padding-bottom: 1%;
+}
+
+.subscription-card-section{
+    width: 80% !important;
+    padding-bottom: 1%;
+
+}
+
+@include media-breakpoint-down(md) {
+    .subscription-card-section {
+        width: 100% !important;
+
+    }
+}
+
+
+
+.generate-card-section{
+    width: 80% !important;
+    padding-bottom: 1%;
+
+}
+
+@include media-breakpoint-down(md) {
+    .generate-card-section {
+        width: 100% !important;
+
+    }
+}
+
+
+.landpage-title{
+    font-size: $font-size-xl;
+}
+@media (min-width:1440px) {
+    .landpage-title{
+        font-size: $font-size-xxl;
+    }
+}
+
+@media (max-width:425px) {
+    .landpage-title{
+        font-size: $font-size-lg;
+    }
+}
+
+.landpage-subtitle{
+    font-size: $font-size-xl;
+}
+@media (min-width:1440px) {
+    .landpage-subtitle{
+        font-size: $font-size-xxl;
+    }
+}
+
+@media (max-width:425px) {
+    .landpage-subtitle{
+        font-size: $font-size-lg;
+    }
+}
+
+
+.landpage-description{
+    font-size: $font-size-base;
+
+}
+@media (min-width:1440px) {
+    .landpage-description{
+        font-size: $font-size-lg;
+    }
+}
+
+@media (max-width:425px) {
+    .landpage-description{
+        font-size: $font-size-sm;
+    }
+}

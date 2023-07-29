@@ -7,7 +7,7 @@ p {
 }
 
 .lead {
-	font-size: $lead-font-size;
+	// font-size: $lead-font-size;
   	font-weight: $lead-font-weight;
 	line-height: $paragraph-line-height;
 	margin-top: 1.5rem;
@@ -18,9 +18,14 @@ p {
 }
 
 .description {
-	font-size: $font-size-sm;
+	font-size: $font-size-base;
 }
 
+@media (min-width: 1440px) {
+    .description {
+      font-size:$font-size-lg /* Adjust font size for larger screens */
+    }
+  }
 // Headings
 
 .heading {

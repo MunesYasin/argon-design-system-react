@@ -28,18 +28,33 @@ import Landing from "views/examples/Landing.js";
 import Login from "views/examples/Login.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
+import Plans from "views/examples/Plans.js";
+import DemoNavbar from "components/Navbars/DemoNavbar";
+import SimpleFooter from "components/Footers/SimpleFooter";
+
+import Subscription from "views/examples/Subscription.js";
+import Home from "views/examples/Home.js";
+import Verify from "views/examples/Verify.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
+    <DemoNavbar />
     <Routes>
       <Route path="/" exact element={<Index />} />
       <Route path="/landing-page" exact element={<Landing />} />
       <Route path="/login-page" exact element={<Login />} />
       <Route path="/profile-page" exact element={<Profile />} />
+      <Route path="/plans-page" exact element={<Plans />} />
+      <Route path="/subscriptions" exact element={<Subscription />} />
+      <Route path="/home-page" exact element={<Home />} />
+      
+      <Route path="/verify-page" exact element={<Verify />} />
+
       <Route path="/register-page" exact element={<Register />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    <SimpleFooter />
   </BrowserRouter>
 );

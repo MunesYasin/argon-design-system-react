@@ -37,8 +37,6 @@ import {
 } from "reactstrap";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import CardsFooter from "components/Footers/CardsFooter.js";
 
 // index page sections
 import Download from "../IndexSections/Download.js";
@@ -53,7 +51,6 @@ class Landing extends React.Component {
   render() {
     return (
       <>
-        <DemoNavbar />
         <main ref="main">
           <div className="position-relative">
             {/* shape Hero */}
@@ -73,39 +70,17 @@ class Landing extends React.Component {
                 <div className="col px-0">
                   <Row>
                     <Col lg="6">
-                      <h1 className="display-3 text-white">
+                      <div className="display-3 text-white landpage-title">
                         A beautiful Design System{" "}
-                        <span>completed with examples</span>
-                      </h1>
-                      <p className="lead text-white">
+                       
+                      </div>
+                      <div className="landpage-subtitle text-white">completed with examples</div>
+                      <div className="lead text-white landpage-description">
                         The design system comes with four pre-built pages to
                         help you get started faster. You can change the text and
                         images and you're good to go.
-                      </p>
-                      <div className="btn-wrapper">
-                        <Button
-                          className="btn-icon mb-3 mb-sm-0"
-                          color="info"
-                          href="https://demos.creative-tim.com/argon-design-system-react/#/documentation/alerts?ref=adsr-landing-page"
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <i className="fa fa-code" />
-                          </span>
-                          <span className="btn-inner--text">Components</span>
-                        </Button>
-                        <Button
-                          className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
-                          color="default"
-                          href="https://www.creative-tim.com/product/argon-design-system-react?ref=adsr-landing-page"
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <i className="ni ni-cloud-download-95" />
-                          </span>
-                          <span className="btn-inner--text">
-                            Download React
-                          </span>
-                        </Button>
                       </div>
+                      
                     </Col>
                   </Row>
                 </div>
@@ -140,15 +115,15 @@ class Landing extends React.Component {
                           <div className="icon icon-shape icon-shape-primary rounded-circle mb-4">
                             <i className="ni ni-check-bold" />
                           </div>
-                          <h6 className="text-primary text-uppercase">
+                          <div className="text-primary text-uppercase landpage-card-title">
                             Download Argon
-                          </h6>
+                          </div>
                           <p className="description mt-3">
                             Argon is a great free UI package based on Bootstrap
                             4 that includes the most important components and
                             features.
                           </p>
-                          <div>
+                          <div className="landpage-card-badge">
                             <Badge color="primary" pill className="mr-1">
                               design
                             </Badge>
@@ -160,7 +135,7 @@ class Landing extends React.Component {
                             </Badge>
                           </div>
                           <Button
-                            className="mt-4"
+                            className="mt-4 landpage-card-button"
                             color="primary"
                             href="#pablo"
                             onClick={(e) => e.preventDefault()}
@@ -176,7 +151,7 @@ class Landing extends React.Component {
                           <div className="icon icon-shape icon-shape-success rounded-circle mb-4">
                             <i className="ni ni-istanbul" />
                           </div>
-                          <h6 className="text-success text-uppercase">
+                          <h6 className="text-success text-uppercase landpage-card-title">
                             Build Something
                           </h6>
                           <p className="description mt-3">
@@ -184,7 +159,7 @@ class Landing extends React.Component {
                             4 that includes the most important components and
                             features.
                           </p>
-                          <div>
+                          <div className="landpage-card-badge">
                             <Badge color="success" pill className="mr-1">
                               business
                             </Badge>
@@ -196,7 +171,7 @@ class Landing extends React.Component {
                             </Badge>
                           </div>
                           <Button
-                            className="mt-4"
+                            className="mt-4 landpage-card-button"
                             color="success"
                             href="#pablo"
                             onClick={(e) => e.preventDefault()}
@@ -212,7 +187,7 @@ class Landing extends React.Component {
                           <div className="icon icon-shape icon-shape-warning rounded-circle mb-4">
                             <i className="ni ni-planet" />
                           </div>
-                          <h6 className="text-warning text-uppercase">
+                          <h6 className="text-warning text-uppercase landpage-card-title">
                             Prepare Launch
                           </h6>
                           <p className="description mt-3">
@@ -220,9 +195,9 @@ class Landing extends React.Component {
                             4 that includes the most important components and
                             features.
                           </p>
-                          <div>
+                          <div className="landpage-card-badge">
                             <Badge color="warning" pill className="mr-1">
-                              marketing
+                              market
                             </Badge>
                             <Badge color="warning" pill className="mr-1">
                               product
@@ -232,7 +207,7 @@ class Landing extends React.Component {
                             </Badge>
                           </div>
                           <Button
-                            className="mt-4"
+                            className="mt-4 landpage-card-button"
                             color="warning"
                             href="#pablo"
                             onClick={(e) => e.preventDefault()}
@@ -864,7 +839,6 @@ class Landing extends React.Component {
           </section>
           <Download />
         </main>
-        <CardsFooter />
       </>
     );
   }

@@ -34,20 +34,153 @@ import {
   Col,
 } from "reactstrap";
 
+import { auth, provider } from "../../assets/config/firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut
+} from "firebase/auth";
+
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
+import SignInUpForm from "../../components/singInUpForm/signInUpForm";
+import Modal from "../IndexSections/Modals";
 
+import githubImage from "assets/img/icons/common/github.svg";
+import googleImage from "assets/img/icons/common/google.svg";
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      showFaildModal: false,
+      error: null,
+      isEmailVerified : false
+    };
+
+    this.inputs = [
+      {
+        id: "email",
+        placeholder: "Email",
+        type: "email",
+        autoComplete: "off",
+        icon: "ni ni-email-83",
+      },
+      {
+        id: "password",
+        placeholder: "Password",
+        type: "password",
+        autoComplete: "off",
+        icon: "ni ni-lock-circle-open",
+      },
+    ];
+    this.thirdPartySign = [
+      {
+        img: githubImage,
+        callback: this.handleLoginByGithub,
+        text: "Github",
+      },
+      {
+        img: googleImage,
+        callback: this.handleLoginByGoogle,
+        text: "Google",
+      },
+    ];
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
   }
+
+  redirectToProfilePage = () => {
+    // Your redirection logic here
+    window.location.href = "/profile-page";
+  };
+
+  handleLoginByGithub = () => {};
+
+  handleLoginByGoogle = async () => {
+    signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        // call after sign in proccess
+        this.afterSignInProccess(userCredential);
+      })
+      .catch((error) => {
+        this.handleError(error);
+      });
+  };
+
+  handleSignUpByEmailAndPassword = async (inputsValue) => {
+    const { email, password } = inputsValue;
+    console.log(inputsValue, "inputsValue");
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // call after sign in proccess
+        this.afterSignInProccess(userCredential);
+      })
+      .catch((error) => {
+        this.handleError(error);
+      });
+  };
+
+  updateEmail = (e) => {
+    this.setState({ email: e.target.value });
+  };
+  updatePassword = (e) => {
+    this.setState({ password: e.target.value });
+  };
+
+  closeFailedModal = () => {
+    this.setState({
+      showFaildModal: false,
+    });
+  };
+
+  afterSignInProccess = (userCredential) => {
+    // User signed up successfully
+    const user = userCredential.user;
+    console.log("User signed in:", user);
+
+    if(!user.emailVerified){
+      this.handleError({message:"Your account is not verified , please verifiy it"})
+       this.logOut()
+    }else{
+    // Redirect the user to the profile page after successful sign-up
+    this.redirectToProfilePage();
+    }
+
+
+  };
+
+  logOut = async () => {
+    try {
+      // Sign the user out using the signOut() method
+      signOut(auth).then(() => {
+      });
+      // The user is now signed out. The onAuthStateChanged listener will trigger, and currentUser will be set to null in the state.
+    } catch (error) {
+      // Handle any sign-out errors
+      console.error("Sign-out error:", error);
+      this.handleError(error)
+    }
+  };
+
+  handleError = (error) => {
+    // Handle sign-up errors
+    this.setState({
+      showFaildModal: true,
+      error: error,
+    });
+  };
   render() {
+    const { error, showFaildModal } = this.state;
+
     return (
       <>
-        <DemoNavbar />
         <main ref="main">
           <section className="section section-shaped section-lg">
             <div className="shape shape-style-1 bg-gradient-default">
@@ -60,131 +193,29 @@ class Login extends React.Component {
               <span />
               <span />
             </div>
-            <Container className="pt-lg-7">
-              <Row className="justify-content-center">
-                <Col lg="5">
-                  <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-white pb-5">
-                      <div className="text-muted text-center mb-3">
-                        <small>Sign in with</small>
-                      </div>
-                      <div className="btn-wrapper text-center">
-                        <Button
-                          className="btn-neutral btn-icon"
-                          color="default"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={
-                                require("assets/img/icons/common/github.svg")
-                                  .default
-                              }
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={
-                                require("assets/img/icons/common/google.svg")
-                                  .default
-                              }
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardBody className="px-lg-5 py-lg-5">
-                      <div className="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
-                      </div>
-                      <Form role="form">
-                        <FormGroup className="mb-3">
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-email-83" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input placeholder="Email" type="email" />
-                          </InputGroup>
-                        </FormGroup>
-                        <FormGroup>
-                          <InputGroup className="input-group-alternative">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>
-                                <i className="ni ni-lock-circle-open" />
-                              </InputGroupText>
-                            </InputGroupAddon>
-                            <Input
-                              placeholder="Password"
-                              type="password"
-                              autoComplete="off"
-                            />
-                          </InputGroup>
-                        </FormGroup>
-                        <div className="custom-control custom-control-alternative custom-checkbox">
-                          <input
-                            className="custom-control-input"
-                            id=" customCheckLogin"
-                            type="checkbox"
-                          />
-                          <label
-                            className="custom-control-label"
-                            htmlFor=" customCheckLogin"
-                          >
-                            <span>Remember me</span>
-                          </label>
-                        </div>
-                        <div className="text-center">
-                          <Button
-                            className="my-4"
-                            color="primary"
-                            type="button"
-                          >
-                            Sign in
-                          </Button>
-                        </div>
-                      </Form>
-                    </CardBody>
-                  </Card>
-                  <Row className="mt-3">
-                    <Col xs="6">
-                      <a
-                        className="text-light"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <small>Forgot password?</small>
-                      </a>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                      <a
-                        className="text-light"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <small>Create new account</small>
-                      </a>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Container>
+
+            <SignInUpForm
+              formTitle={"Sign in with"}
+              subTitle={"Or sign in with credentials"}
+              buttonText={"Sign in"}
+              buttonCallback={this.handleSignUpByEmailAndPassword}
+              inputLabel={"Remember me"}
+              inputs={this.inputs}
+              thirdPartySign={this.thirdPartySign}
+              signIn={true}
+            />
+
+            {showFaildModal && (
+              <Modal
+                modalType={"notificationModal"}
+                description={error.message}
+                title={"Error"}
+                showCloseButton={true}
+                closeModal={this.closeFailedModal}
+              />
+            )}
           </section>
         </main>
-        <SimpleFooter />
       </>
     );
   }

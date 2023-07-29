@@ -1,4 +1,3 @@
-
 .card {
   position: relative;
 
@@ -10,68 +9,116 @@
 }
 
 .profile-page {
-    .card-profile {
-        margin-top: -150px;
+  .card-profile {
+    margin-top: -150px;
 
-        .card-profile-image {
-            position: relative;
-            //min-height: 130px;
+    .card-profile-image {
+      position: relative;
+      //min-height: 130px;
 
-            img {
-                max-width: 180px;
-                border-radius: $border-radius;
-                @extend .shadow;
-                transform: translate(-50%,-30%);
-                position: absolute;
-                left: 50%;
-                transition: $transition-base;
+      img {
+        max-width: 180px;
+        border-radius: $border-radius;
+        @extend .shadow;
+        transform: translate(-50%, -30%);
+        position: absolute;
+        left: 50%;
+        transition: $transition-base;
 
-                &:hover {
-                    transform: translate(-50%, -33%);
-                }
-            }
+        &:hover {
+          transform: translate(-50%, -33%);
         }
-
-        .card-profile-stats {
-            padding: 1rem 0;
-
-            > div {
-                text-align: center;
-                margin-right: 1rem;
-                padding: .875rem;
-
-                &:last-child {
-                    margin-right: 0;
-                }
-
-                .heading {
-                    font-size: 1.1rem;
-                    font-weight: bold;
-                    display: block;
-                }
-                .description {
-                    font-size: .875rem;
-                    color: $gray-500;
-                }
-            }
-        }
-
-        .card-profile-actions {
-            padding: .875rem;
-        }
-
-        @include media-breakpoint-down(xs) {
-            .card-profile-actions {
-                margin-top: 110px;
-            }
-        }
-
-        @include media-breakpoint-between(sm, md) {
-            .card-profile-stats {
-                margin-top: 30px;
-            }
-        }
+      }
     }
+
+    .card-profile-stats {
+      padding: 1rem 0;
+
+      >div {
+        text-align: center;
+        margin-right: 1rem;
+        padding: .875rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .heading {
+          font-size: 1.1rem;
+          font-weight: bold;
+          display: block;
+        }
+
+        .description {
+          font-size: .875rem;
+          color: $gray-500;
+        }
+      }
+    }
+
+    .card-profile-actions {
+      padding: .875rem;
+    }
+
+    @include media-breakpoint-down(xs) {
+      .card-profile-actions {
+        margin-top: 110px;
+      }
+    }
+
+    @include media-breakpoint-between(sm, md) {
+      .card-profile-stats {
+        margin-top: 30px;
+      }
+    }
+  }
+
+
+
+  .profilePage-userName {
+    font-size: $font-size-xl;
+    font-weight: 500;
+  }
+
+  @media (min-width: 1440px) {
+    .profilePage-userName {
+      font-size: $font-size-xxl !important
+        /* Adjust font size for larger screens */
+    }
+  }
+
+  .profilePage-subscription-details {
+    font-size: $font-size-lg;
+    font-weight: 300;
+  }
+
+  @media (min-width: 1440px) {
+    .profilePage-subscription-details {
+      font-size: $font-size-xl !important;
+     
+        /* Adjust font size for larger screens */
+    }
+  }
+
+  .card-profile{
+    margin-top: -400px;
+  }
+
+  @media (max-width: 768px) {
+    .card-profile {
+      margin-top: -300px;
+     
+        /* Adjust font size for larger screens */
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .card-profile {
+      margin-top: -300px;
+     
+        /* Adjust font size for larger screens */
+    }
+  }
 }
 
 // Card with blockquotes
@@ -82,12 +129,12 @@
     position: relative;
 
     .svg-bg {
-        display: block;
-        width: 100%;
-        height: 95px;
-        position: absolute;
-        top: -94px;
-        left: 0;
+      display: block;
+      width: 100%;
+      height: 95px;
+      position: absolute;
+      top: -94px;
+      left: 0;
     }
   }
 }
@@ -95,8 +142,199 @@
 // Animated cards
 
 .card-lift--hover {
-    &:hover {
-        transform: translateY(-20px);
-        @include transition($transition-base);
-    }
+  &:hover {
+    transform: translateY(-20px);
+    @include transition($transition-base);
+  }
+}
+
+
+.plans-card-price {
+  font-size: $font-size-xxl;
+}
+
+@media (min-width: 1024px) {
+  .plans-card-price {
+    font-size: $font-size-xxxl
+      /* Adjust font size for larger screens */
+  }
+}
+
+.plans-card-description {
+  font-size: $font-size-base;
+  text-align: center;
+}
+
+@media (min-width: 1440px) {
+  .plans-card-description {
+    font-size: $font-size-lg
+      /* Adjust font size for larger screens */
+  }
+}
+
+.plans-card-button {
+  font-size: $font-size-sm;
+}
+
+@media (min-width: 1440px) {
+  .plans-card-button {
+    font-size: $font-size-base
+      /* Adjust font size for larger screens */
+  }
+}
+
+.plans-card-title {
+  font-size: $font-size-base;
+}
+
+/* Font size for CardHeader at smaller screen sizes (e.g., mobile devices) */
+@media (max-width: 768px) {
+  .plans-card-title {
+    font-size: $font-size-sm;
+  }
+}
+
+/* Font size for CardHeader at larger screen sizes (e.g., desktops) */
+@media (min-width: 1024px) {
+  .plans-card-title {
+    font-size: $font-size-lg;
+  }
+}
+
+
+.home-card-button {
+  font-size: $font-size-sm;
+
+}
+
+@media (min-width: 1440px) {
+  .home-card-button {
+    font-size: $font-size-base
+      /* Adjust font size for larger screens */
+  }
+}
+
+.subscription-card-button {
+  font-size: $font-size-sm;
+
+}
+
+@media (min-width: 1440px) {
+  .subscription-card-button {
+    font-size: $font-size-base
+      /* Adjust font size for larger screens */
+  }
+}
+
+
+
+.landpage-card-title {
+  font-size: $font-size-xl;
+}
+
+
+@media (max-width: 1024px) {
+  .landpage-card-title {
+    font-size: $font-size-lg
+      /* Adjust font size for larger screens */
+  }
+}
+
+.landpage-card-badge {
+  font-size: $font-size-base;
+}
+
+@media (min-width: 1440px) {
+  .landpage-card-badge {
+    font-size: $font-size-lg
+      /* Adjust font size for larger screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .landpage-card-badge {
+    font-size: $font-size-lg
+      /* Adjust font size for larger screens */
+  }
+}
+
+
+.landpage-card-button {
+  font-size: $font-size-base;
+}
+
+
+
+
+
+
+
+//   ---------------------------------------------------------------------------------------------------
+.signinup-formTitle {
+  font-size: $font-size-base;
+}
+
+@media (min-width: 1440px) {
+  .signinup-formTitle {
+    font-size: $font-size-lg
+      /* Adjust font size for larger screens */
+  }
+}
+
+.signinup-with-credentials {
+  font-size: $font-size-sm;
+}
+
+@media (min-width: 1440px) {
+  .signinup-with-credentials {
+    font-size: $font-size-base
+      /* Adjust font size for larger screens */
+  }
+}
+
+.signinup-input-label {
+  font-size: $font-size-sm !important;
+
+}
+
+@media (min-width: 1440px) {
+  .signinup-input-label {
+    font-size: $font-size-base !important
+      /* Adjust font size for larger screens */
+  }
+}
+
+.signinup-button {
+  font-size: $font-size-sm;
+}
+
+@media (min-width: 1440px) {
+  .signinup-button {
+    font-size: $font-size-base
+      /* Adjust font size for larger screens */
+  }
+}
+
+.signin-forgot-password {
+  font-size: $font-size-sm !important;
+
+}
+
+@media (min-width: 1440px) {
+  .signin-forgot-password {
+    font-size: $font-size-base !important
+      /* Adjust font size for larger screens */
+  }
+}
+
+.signin-create-new-account {
+  font-size: $font-size-sm !important;
+
+}
+
+@media (min-width: 1440px) {
+  .signin-create-new-account {
+    font-size: $font-size-base !important
+      /* Adjust font size for larger screens */
+  }
 }

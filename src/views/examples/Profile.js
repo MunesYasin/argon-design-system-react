@@ -20,20 +20,73 @@ import React from "react";
 // reactstrap components
 import { Button, Card, Container, Row, Col } from "reactstrap";
 
+import { auth } from "../../assets/config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
+import axios from "../../assets/config/axios";
+import Modal from "../IndexSections/Modals";
 
 class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: {},
+      showFaildModal: false,
+      error: null,
+    };
+  }
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
+
+    // Listen for authentication state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        console.log("User signed in:", user);
+
+        axios
+          .get("/getSubscription")
+          .then((res) => {
+            // add subscription detail to user object which come from firebase
+            let {
+              subscription_status = "No subscription",
+              start_date,
+              end_date,
+            } = {};
+            res.data.subscription_status &&
+              ({ subscription_status, start_date, end_date } = res.data);
+            user = { ...user, subscription_status, start_date, end_date };
+            this.setState({ currentUser: user });
+          })
+          .catch((error) => {
+            this.setState({
+              showFaildModal: true,
+              error: error,
+            });
+          });
+      } else {
+        // No user is signed in
+        console.log("No user signed in");
+        this.setState({ currentUser: null });
+      }
+    });
   }
+
+  closeFailedModal = () => {
+    this.setState({
+      showFaildModal: false,
+    });
+  };
+
   render() {
+    const { currentUser, error, showFaildModal } = this.state;
     return (
       <>
-        <DemoNavbar />
         <main className="profile-page" ref="main">
           <section className="section-profile-cover section-shaped my-0">
             {/* Circles background */}
@@ -65,7 +118,7 @@ class Profile extends React.Component {
           </section>
           <section className="section">
             <Container>
-              <Card className="card-profile shadow mt--300">
+              <Card className="card-profile shadow">
                 <div className="px-4">
                   <Row className="justify-content-center">
                     <Col className="order-lg-2" lg="3">
@@ -121,23 +174,28 @@ class Profile extends React.Component {
                       </div>
                     </Col>
                   </Row>
-                  <div className="text-center mt-5">
-                    <h3>
-                      Jessica Jones{" "}
-                      <span className="font-weight-light">, 27</span>
-                    </h3>
-                    <div className="h6 font-weight-300">
-                      <i className="ni location_pin mr-2" />
-                      Bucharest, Romania
+                  <div className="text-center mt-5 profilePage-subscription-details ">
+                    <div className="profilePage-userName">
+                      {currentUser?.displayName}{" "}
+                      {/* <span className="font-weight-light">, 27</span> */}
                     </div>
-                    <div className="h6 mt-4">
-                      <i className="ni business_briefcase-24 mr-2" />
-                      Solution Manager - Creative Tim Officer
-                    </div>
-                    <div>
-                      <i className="ni education_hat mr-2" />
-                      University of Computer Science
-                    </div>
+                    <div className="  mt-4">
+                          <i className="ni location_pin mr-2" />
+                          Subscription : <span className="font-weight-500"> {currentUser?.subscription_status}</span> 
+                        </div>
+                    {currentUser?.start_date && (
+                      <>
+                        
+                        <div>
+                          <i className="ni business_briefcase-24 mr-2" />
+                          Start date : {currentUser?.start_date}
+                        </div>
+                        <div>
+                          <i className="ni education_hat mr-2" />
+                          End date : {currentUser?.end_date}
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="mt-5 py-5 border-top text-center">
                     <Row className="justify-content-center">
@@ -160,7 +218,15 @@ class Profile extends React.Component {
             </Container>
           </section>
         </main>
-        <SimpleFooter />
+        {showFaildModal && (
+          <Modal
+            modalType={"notificationModal"}
+            description={error.message}
+            title={"Error"}
+            showCloseButton={true}
+            closeModal={this.closeFailedModal}
+          />
+        )}
       </>
     );
   }

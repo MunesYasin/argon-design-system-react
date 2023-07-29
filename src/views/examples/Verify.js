@@ -32,6 +32,8 @@ import {
   Container,
   Row,
   Col,
+  Badge,
+
 } from "reactstrap";
 
 import { auth, provider, firebaseConfig } from "../../assets/config/firebase";
@@ -39,7 +41,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   sendEmailVerification,
-  signOut,
 } from "firebase/auth";
 
 // core components
@@ -50,7 +51,7 @@ import SignInUpForm from "../../components/singInUpForm/signInUpForm";
 import githubImage from "assets/img/icons/common/github.svg";
 import googleImage from "assets/img/icons/common/google.svg";
 import Modal from "../IndexSections/Modals";
-import VerifyComponent from "./Verify";
+
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +63,6 @@ class Register extends React.Component {
       showSuccessModal: false,
       error: null,
       success: null, // success object for any success response
-      showVerifyComponent: false,
     };
 
     this.inputs = [
@@ -102,11 +102,7 @@ class Register extends React.Component {
     ];
   }
 
-  componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
-  }
+
 
   redirectToProfilePage = () => {
     // Your redirection logic here
@@ -139,17 +135,7 @@ class Register extends React.Component {
   };
 
   afterSignUpProccess = (userCredential) => {
-    // Send email
-    this.sendVefiricationEmail(userCredential);
-
-    // show verify component
-    this.setState({ showVerifyComponent: true });
-
-    // logout the user because he is not verified
-    this.logOut();
-  };
-
-  sendVefiricationEmail = (userCredential) => {
+    // User signed up successfully
     const user = userCredential.user;
     console.log("User signed up:", user);
 
@@ -160,7 +146,11 @@ class Register extends React.Component {
       handleCodeInApp: true,
     };
     sendEmailVerification(user, actionCodeSettings);
+
+    // redirect the user to verify page
+    this.redirectUserToVerifyPage();
   };
+
   updateUserName = (e) => {
     this.setState({ userNmae: e.target.value });
   };
@@ -198,77 +188,61 @@ class Register extends React.Component {
   redirectUserToVerifyPage = () => {
     window.location.href = "/verify-page";
   };
-  logOut = async () => {
-    try {
-      // Sign the user out using the signOut() method
-      signOut(auth).then(() => {});
-      // The user is now signed out. The onAuthStateChanged listener will trigger, and currentUser will be set to null in the state.
-    } catch (error) {
-      // Handle any sign-out errors
-      console.error("Sign-out error:", error);
-      this.handleError(error);
-    }
-  };
+
+  resendEmail=()=>{
+    // const user = userCredential.user;
+    // console.log("User signed up:", user);
+
+    // // Send the email verification to the user's email
+    // let appUrl = firebaseConfig.authDomain;
+    // const actionCodeSettings = {
+    //   url: `https://${appUrl}/${user.email}`, // Replace with your app's verification URL
+    //   handleCodeInApp: true,
+    // };
+    // sendEmailVerification(user, actionCodeSettings)
+  }
   render() {
-    const {
-      error,
-      showFaildModal,
-      success,
-      showSuccessModal,
-      showVerifyComponent,
-    } = this.state;
+    const { onResend } = this.props;
 
     return (
       <>
-        <main ref="main">
-          <section className="section section-shaped section-lg">
-            <div className="shape shape-style-1 bg-gradient-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
+       
+            <Container>
+              {/* <Row className="justify-content-center">
+                <Col lg="12">
+                  <Row className="row-grid">
+                    <Col lg="4"> */}
+                      <Card className="mt-5 shadow border-0">
+                        <CardBody className="py-5">
+                            <div className="d-flex justify-content-center">
+                            <div className="icon icon-shape icon-shape-warning rounded-circle mb-4 ">
+                            <i className="ni ni-planet" />
+                          </div>
+                         
+                            </div>
+                       
+                          <p className="description mt-3 text-center">
+                           To complete sign up please check your email to verify your account
+                          </p>
+                          <div className="d-flex justify-content-center">
 
-            {!showVerifyComponent ? (
-              <>
-                <SignInUpForm
-                  formTitle={"Sign up with"}
-                  subTitle={"Or sign up with credentials"}
-                  buttonText={"Sign up"}
-                  buttonCallback={this.handleSignUpByEmailAndPassword}
-                  inputLabel={"I agree with the Privacy Policy"}
-                  inputs={this.inputs}
-                  thirdPartySign={this.thirdPartySign}
-                />
-                {showFaildModal && (
-                  <Modal
-                    modalType={"notificationModal"}
-                    description={error.message}
-                    title={"Error"}
-                    showCloseButton={true}
-                    closeModal={this.closeFailedModal}
-                  />
-                )}
-                {showSuccessModal && (
-                  <Modal
-                    modalType={"primary"}
-                    description={success.message}
-                    title={"Success"}
-                    closeModal={this.closeSuccessModal}
-                    onClick={success.onClick}
-                    buttonText={success.buttonText}
-                  />
-                )}
-              </>
-            ) : (
-              <VerifyComponent onResend={this.sendVefiricationEmail}/>
-            )}
-          </section>
-        </main>
+                          <Button
+                            className="mt-4 landpage-card-button"
+                            color="warning"
+                            href="#pablo"
+                            onClick={onResend}
+                          >
+                            Resend
+                          </Button>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    {/* </Col>
+                  </Row>
+                </Col>
+              </Row> */}
+            </Container>
+       
       </>
     );
   }

@@ -1,7 +1,10 @@
 .footer {
     background: $secondary;
     padding: 1.5rem 0;
+    margin-top: 10%;
+    font-size: $font-size-base;
 
+    width: 100%;
     .col-footer {
         .heading {
             color: $footer-heading-color;
@@ -36,7 +39,11 @@
     .copyright {
         font-size: $font-size-sm;
     }
-
+    @media (min-width: 1024px) {
+        .copyright {
+          font-size:$font-size-base /* Adjust font size for larger screens */
+        }
+      }
     .dropdown {
       .btn:not(:disabled):not(.disabled):active:focus,
       .btn:not(:disabled):not(.disabled).active:focus {
@@ -51,6 +58,20 @@
     }
 }
 
+
+/* Media query for screens with a maximum width of 768 pixels (e.g., mobile devices) */
+@media (max-width: 768px) {
+    .footer {
+      font-size: $font-size-sm; /* Adjust font size for smaller screens */
+    }
+  }
+  
+  /* Media query for screens with a minimum width of 1200 pixels (e.g., large desktops) */
+  @media (min-width: 1024px) {
+    .footer {
+      font-size:$font-size-lg /* Adjust font size for larger screens */
+    }
+  }
 .footer.has-cards {
     overflow: hidden;
     padding-top: 500px;
@@ -80,7 +101,11 @@
     .nav-link {
         font-size: $font-size-sm;
     }
-
+    @media (min-width: 1024px) {
+        .nav-link {
+          font-size: $font-size-base; /* Adjust font size for smaller screens */
+        }
+      }
     .nav-item:last-child {
         .nav-link {
             padding-right: 0;
